@@ -25,7 +25,7 @@ var minimalEngine = {
   }
 }
 
-var ro1 = customize()
+var testee = customize()
   .registerEngine('test', require('./testEngine.js'))
   .merge({
     test: {
@@ -51,7 +51,7 @@ describe('After loading a config', function () {
 
   var testResult = null
   before(function () {
-    return ro1.run().then(function (result) {
+    return testee.run().then(function (result) {
       testResult = result
     })
   })
@@ -91,7 +91,7 @@ describe('After loading a config', function () {
 describe('After merging another config', function () {
   var testResult = null
   before(function () {
-    return ro1
+    return testee
       .merge({
         test: {
           files: 'test/fixtures/testPartials2',
@@ -157,7 +157,7 @@ describe('after loading a module', function () {
   var testResult = null
   before(function () {
     // Load a configuration-module
-    return ro1
+    return testee
       .load(require('./fixtures/module/index.js'))
       .run()
       .then(function (result) {
@@ -199,7 +199,7 @@ describe('after loading a module', function () {
 
 describe('the "merge"-method', function () {
   it('should not fail merging an empty object', function () {
-    ro1
+    testee
       .merge({
         test: {}
       })
@@ -208,7 +208,7 @@ describe('the "merge"-method', function () {
 
   it('should throw an error if the config data for an engine that is not registered', function () {
     return expect(function () {
-      return ro1.merge({test2: {}})
+      return testee.merge({test2: {}})
     }).to.throw(Error)
   })
 
@@ -230,6 +230,18 @@ describe('the "merge"-method', function () {
         }
       })
       .buildConfig()).to.be.rejectedWith(Error, /Error while validating Customize configuration/)
+  })
+
+  it('should handle a missing "preprocessConfig" and "schema" gracefully', function () {
+    return expect(customize().registerEngine('test', minimalEngine).merge({
+      test: {
+        abc: 'abc'
+      }
+    }).buildConfig()).to.eventually.deep.equal({
+      test: {
+        abc: 'abc'
+      }
+    })
   })
 })
 
@@ -268,7 +280,12 @@ describe('The "registerEngine"-method', function () {
 
 describe('The "configSchema"-method', function () {
   it('should return a combined configuration schema for the all engines', function () {
-    return expect(customize().registerEngine('test', require('./testEngine.js')).configSchema()).to.deep.equal({
+    var co = customize()
+      .registerEngine('test', require('./testEngine.js'))
+      .registerEngine('test2', minimalEngine)
+
+    return expect(co.configSchema()).to.deep.equal({
+      'id': 'http://json-schema.org/draft-04/schema#',
       '$schema': 'http://json-schema.org/draft-04/schema#',
       'type': 'object',
       'properties': {
@@ -294,8 +311,48 @@ describe('The "configSchema"-method', function () {
               type: 'function'
             }
           }
+        },
+        'test2': {
+          'description': 'No expicit schema has been provided for this engine',
+          'type': 'object'
         }
       }
+    })
+  })
+})
+
+describe('The "load"-method', function () {
+  it('should handle a missing "package" gracefully', function () {
+    var result = customize()
+      .registerEngine('test', minimalEngine)
+      .load(require('./fixtures/module/nopackage.js'))
+      .run()
+    return expect(result).to.eventually.deep.equals({
+      test: {}
+    })
+  })
+})
+
+describe('the "run"-method', function () {
+  var twoEngines = customize()
+    .registerEngine('test1', minimalEngine)
+    .registerEngine('test2', minimalEngine)
+    .merge({
+      'test1': 'result1',
+      'test2': 'result2'
+    })
+
+  it('should only run a single engine, if the "onlyEngine"-option is set', function () {
+    return expect(twoEngines.run({onlyEngine: 'test1'})).to.eventually.deep.equal({
+      'test1': 'result1',
+      'test2': undefined
+    })
+  })
+
+  it('should only run all engines, if the "onlyEngine"-option is not set', function () {
+    return expect(twoEngines.run()).to.eventually.deep.equal({
+      'test1': 'result1',
+      'test2': 'result2'
     })
   })
 })
