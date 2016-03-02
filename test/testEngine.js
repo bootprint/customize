@@ -53,6 +53,13 @@ module.exports = {
     }
   },
 
+  watched: function (config) {
+    return [
+      // The config itself is the directory-path
+      config.files
+    ]
+  },
+
   /**
    * Just return the config
    * @param config

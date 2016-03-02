@@ -8,6 +8,7 @@
 /* global describe */
 /* global it */
 /* global before */
+/* global after */
 
 // /* global xdescribe */
 // /* global xit */
@@ -166,7 +167,7 @@ describe('after loading a module', function () {
   })
 
   it('the files should be overridden on a per-file basis', function () {
-    expect(testResult.test.files).to.eql({
+    return expect(testResult.test.files).to.eql({
       'eins.hbs': {
         path: 'test/fixtures/testPartials1/eins.hbs',
         contents: 'testPartials1/eins {{eins}}'
@@ -178,22 +179,22 @@ describe('after loading a module', function () {
     })
   })
   it('object values should be deep merged', function () {
-    expect(testResult.test.objects).to.eql({
+    return expect(testResult.test.objects).to.eql({
       a: {x: 'x1', y: 'y1'},
       b: {x: 'x1', y: 'y2'}
     })
   })
   it('leaf values should be replaced', function () {
-    expect(testResult.test.leafs).to.eql({
+    return expect(testResult.test.leafs).to.eql({
       a: {x: 'x1', y: 'y1'},
       b: {y: 'y2'}
     })
   })
   it('array values should exist', function () {
-    expect(testResult.test.array).to.eql(['item1', 'item2'])
+    return expect(testResult.test.array).to.eql(['item1', 'item2'])
   })
   it('the withParent-function should properly call the parent-function', function () {
-    expect(testResult.test.withParent(5)).to.equal(16)
+    return expect(testResult.test.withParent(5)).to.equal(16)
   })
 })
 
@@ -354,5 +355,61 @@ describe('the "run"-method', function () {
       'test1': 'result1',
       'test2': 'result2'
     })
+  })
+})
+
+describe('the "watched"-method', function () {
+  it('should return an array for all watch directories and files (promised)', function () {
+    var watched = testee
+      .registerEngine('test2', require('./testEngine'))
+      .merge({
+        'test': {
+          files: 'test/fixtures/testPartials2'
+        },
+        'test2': {
+          files: 'test/fixtures/templates'
+        }
+      })
+      .watched()
+
+    return expect(watched).to.eventually.deep.equal({
+      'test': [
+        'test/fixtures/testPartials1',
+        'test/fixtures/testPartials2'
+      ],
+      'test2': [
+        'test/fixtures/templates'
+      ]
+    })
+  })
+})
+
+describe('Debug output', function () {
+  before(function () {
+    customize.debugState.enabled = true
+    customize.debug.enabled = true
+  })
+  it('should not disturb normal operation', function () {
+    console.log('custom', require('debug')('customize:state').enabled)
+    return expect(testee
+      .load(require('./fixtures/module/index.js'))
+      .run()
+      .get('test')
+      .get('files')
+    ).to.eventually.deep.equal({
+      'eins.hbs': {
+        path: 'test/fixtures/testPartials1/eins.hbs',
+        contents: 'testPartials1/eins {{eins}}'
+      },
+      'zwei.hbs': {
+        path: 'test/fixtures/module/files/zwei.hbs',
+        contents: 'module-partials/zwei {{zwei}}'
+      }
+    })
+  })
+
+  after(function () {
+    customize.debugState.enabled = false
+    customize.debug.enabled = false
   })
 })
