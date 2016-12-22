@@ -23,7 +23,7 @@ module.exports = {
 /**
  * An overridable directory which resolves to the contents of all its files (recursively).
  * Returns an undefined value if the directory path is undefined.
- * @param {string} directoryPath the path to the directory
+ * @param {string|null|undefined} directoryPath the path to the directory
  * @param {object=} options
  * @param {string=} options.glob an optional glob pattern for filtering files
  * @param {boolean=} options.stream if set to true, the contents of a file will be a readable stream
@@ -50,7 +50,7 @@ function readFiles (directoryPath, options) {
             return {
               path: path.relative(process.cwd(), filePath),
               contents: _options.stream
-                ? fs.createReadStream(filePath, { encoding: 'utf-8' })
+                ? fs.createReadStream(filePath, { encoding: _options.encoding })
                 : Q.ninvoke(fs, 'readFile', filePath, {encoding: _options.encoding})
             }
           }))
@@ -65,7 +65,7 @@ function readFiles (directoryPath, options) {
  * An overridable directory which resolves to the contents of all its files (recursively).
  * Returns an undefined value if the directory path is undefined.
  * The contents of each file is a UTF-8 encoded string.
- * @param {string} directoryPath the path to the directory
+ * @param {string|null|undefined} directoryPath the path to the directory
  * @param {object=} options
  * @param {string=} options.glob an optional glob pattern for filtering files
  * @return {Promise<object<string,Promise<{path:string,contents:string}>>>} an object containing

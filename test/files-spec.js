@@ -11,7 +11,7 @@ var toString = require('stream-to-string')
 
 /* global describe */
 /* global it */
-/* global xit */
+// /* global xit */
 
 describe('the files-function', function () {
   var x
@@ -20,12 +20,12 @@ describe('the files-function', function () {
     var x = files('test/fixtures/testPartials1')
     return deep(
       _.merge(
-        {dir: x},
-        {dir: files('test/fixtures/testPartials2')},
+        { dir: x },
+        { dir: files('test/fixtures/testPartials2') },
         overrider)
     )
       .then(function (result) {
-        expect(result).to.eql({
+        expect(result).to.deep.equal({
           dir: {
             'eins.hbs': {
               path: 'test/fixtures/testPartials1/eins.hbs',
@@ -53,8 +53,8 @@ describe('the files-function', function () {
     x = files('test/fixtures/testPartials1', { glob: '*ei.hbs' })
     return deep(
       _.merge(
-        {dir: x},
-        {dir: files('test/fixtures/testPartials2', { glob: '*ei.hbs' })},
+        { dir: x },
+        { dir: files('test/fixtures/testPartials2', { glob: '*ei.hbs' }) },
         overrider)
     )
       .then(function (result) {
@@ -85,8 +85,8 @@ describe('the readFiles-function', function () {
     var x = readFiles('test/fixtures/testPartials1', { encoding: 'utf-8' })
     return deep(
       _.merge(
-        {dir: x},
-        {dir: files('test/fixtures/testPartials2')},
+        { dir: x },
+        { dir: files('test/fixtures/testPartials2') },
         overrider)
     )
       .then(function (result) {
@@ -118,8 +118,8 @@ describe('the readFiles-function', function () {
     x = readFiles('test/fixtures/testPartials1', { glob: '*ei.hbs', encoding: 'utf-8' })
     return deep(
       _.merge(
-        {dir: x},
-        {dir: files('test/fixtures/testPartials2', { glob: '*ei.hbs', encoding: 'utf-8' })},
+        { dir: x },
+        { dir: files('test/fixtures/testPartials2', { glob: '*ei.hbs', encoding: 'utf-8' }) },
         overrider)
     )
       .then(function (result) {
@@ -173,10 +173,8 @@ describe('the readFiles-function', function () {
   it('should return a stream, if the "stream"-option is set to true', function () {
     return deep(readFiles('test/fixtures/testPartials1', { stream: true }))
       .then(function (result) {
-        expect(result['eins.hbs'].contents).to.be.an.instanceof(stream.Readable)
-        expect(result['zwei.hbs'].contents).to.be.an.instanceof(stream.Readable)
-        result['eins.hbs'].contents = toString(result['eins.hbs'].contents, 'utf-8')
-        result['zwei.hbs'].contents = toString(result['zwei.hbs'].contents, 'utf-8')
+        changeContentsStreamToString(result['eins.hbs'], Buffer)
+        changeContentsStreamToString(result['zwei.hbs'], Buffer)
         return deep(result)
       })
       .then(function (result) {
@@ -193,23 +191,21 @@ describe('the readFiles-function', function () {
       })
   })
 
-  xit('should return a stream with encoding, if the "stream"-option and the "encoding" option are set', function () {
-    return deep(readFiles('test/fixtures/testPartials1', { stream: true, encoding: 'hex' }))
+  it('should return a stream with encoding, if the "stream"-option and the "encoding" option are set', function () {
+    return deep(readFiles('test/fixtures/testPartials1', { stream: true, encoding: 'utf-8' }))
       .then(function (result) {
-        expect(result['eins.hbs'].contents).to.be.an.instanceof(stream.Readable)
-        expect(result['zwei.hbs'].contents).to.be.an.instanceof(stream.Readable)
-        result['eins.hbs'].contents = toString(result['eins.hbs'].contents)
-        result['zwei.hbs'].contents = toString(result['zwei.hbs'].contents)
+        changeContentsStreamToString(result['eins.hbs'], 'string')
+        changeContentsStreamToString(result['zwei.hbs'], 'string')
         return deep(result)
       })
       .then(function (result) {
         expect(result).to.deep.equal({
           'eins.hbs': {
-            'contents': '746573745061727469616c73312f65696e73207b7b65696e737d7d',
+            'contents': 'testPartials1/eins {{eins}}',
             'path': 'test/fixtures/testPartials1/eins.hbs'
           },
           'zwei.hbs': {
-            'contents': '746573745061727469616c73312f7a776569207b7b7a7765697d7d',
+            'contents': 'testPartials1/zwei {{zwei}}',
             'path': 'test/fixtures/testPartials1/zwei.hbs'
           }
         })
@@ -220,3 +216,22 @@ describe('the readFiles-function', function () {
     expect(readFiles(undefined)).to.equal(undefined)
   })
 })
+
+/**
+ * Verify the type of data passed in the "contents"-stream and
+ * @param file
+ * @param {stream.Readable} file.contents the stream
+ * @param type the type to check the data against
+ */
+function changeContentsStreamToString (file, type) {
+  expect(file.contents).to.be.an.instanceof(stream.Readable)
+  file.contents.on('data', function (data) {
+    if (typeof type === 'string') {
+      expect(data).to.be.a(type)
+    } else {
+      expect(data).to.be.an.instanceof(type)
+    }
+  })
+  file.contents = toString(file.contents)
+}
+
