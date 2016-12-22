@@ -7,6 +7,8 @@
 
 > A simple framework to create customizable engines
 
+![logo/customize-logo.png](logo/customize-logo.png)
+
 Customize is an abstraction of [bootprint's](https://github.com/nknapp/bootprint) the merging-behaviour. 
 It allows you to create your own projects and engines (other than Less and Handlebars) and create 
 overridable configurations for those.
@@ -155,8 +157,8 @@ config. This example prints the following result.
 
 ```js
 { files: 
-   { 'b.md': { path: 'dir1/b.md', contents: 'Second file (from dir1)' },
-     'a.md': { path: 'dir1/a.md', contents: 'First file (from dir1)' } } }
+   { 'a.md': { path: 'dir1/a.md', contents: 'First file (from dir1)' },
+     'b.md': { path: 'dir1/b.md', contents: 'Second file (from dir1)' } } }
 ```
 
 We can see that the `files`-call of the preprocessor converted the directory path into 
@@ -185,7 +187,7 @@ The engines `run()`-method will now be executed with the resolved configuration,
 which yields the following output:
 
 ```
-{ 'concat.txt': 'First file (from dir1)\nSecond file (from dir1)\n' }
+{ 'concat.txt': 'Second file (from dir1)\nFirst file (from dir1)\n' }
 ```
 
 ### Merging another configuration
