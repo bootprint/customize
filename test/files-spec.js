@@ -218,7 +218,7 @@ describe('the readFiles-function', function () {
 })
 
 /**
- * Verify the type of data passed in the "contents"-stream and
+ * Verify the type of data passed in the "contents"-stream and change it into a promise for the resulting string
  * @param file
  * @param {stream.Readable} file.contents the stream
  * @param type the type to check the data against
