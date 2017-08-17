@@ -43,7 +43,7 @@
   ],
   "keywords": [],
   "devDependencies": {
-    "chai": "^3.3.0",
+    "chai": "^4.0.0",
     "chai-as-promised": "^6.0.0",
     "clarify": "^2.0.0",
     "dirty-chai": "^1.2.2",
