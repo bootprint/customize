@@ -47,7 +47,7 @@
     "chai-as-promised": "^6.0.0",
     "clarify": "^2.0.0",
     "dirty-chai": "^1.2.2",
-    "eslint": "^3.17.1",
+    "eslint": "^4.1.0",
     "eslint-config-standard": "^7.0.1",
     "eslint-plugin-import": "^2.2.0",
     "eslint-plugin-mocha": "^4.8.0",
