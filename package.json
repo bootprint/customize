@@ -25,7 +25,7 @@
     "version": "thoughtful changelog -o -a && npm run thought"
   },
   "dependencies": {
-    "debug": "^2.2.0",
+    "debug": "^3.1.0",
     "deep-aplus": "^1.0.4",
     "glob": "^7.1.1",
     "jsonschema": "^1.0.2",
