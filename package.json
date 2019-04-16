@@ -57,7 +57,7 @@
     "eslint-plugin-standard": "^4.0.0",
     "json-stable-stringify": "^1.0.1",
     "mocha": "^6.0.1",
-    "nyc": "^13.3.0",
+    "nyc": "^14.0.0",
     "stream-to-string": "^1.2.0",
     "thought": "^2.0.0",
     "thought-plugin-jsdoc": "^1.1.0",
