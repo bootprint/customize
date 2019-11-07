@@ -51,7 +51,7 @@ function readFiles (directoryPath, options) {
               path: path.relative(process.cwd(), filePath),
               contents: _options.stream
                 ? fs.createReadStream(filePath, { encoding: _options.encoding })
-                : Q.ninvoke(fs, 'readFile', filePath, {encoding: _options.encoding})
+                : Q.ninvoke(fs, 'readFile', filePath, { encoding: _options.encoding })
             }
           }))
         ]

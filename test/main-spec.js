@@ -30,12 +30,12 @@ var testee = customize()
     test: {
       files: 'test/fixtures/testPartials1',
       objects: {
-        a: {x: 'x1', y: 'y1'},
-        b: {x: 'x1', y: 'y1'}
+        a: { x: 'x1', y: 'y1' },
+        b: { x: 'x1', y: 'y1' }
       },
       leafs: {
-        a: {x: 'x1', y: 'y1'},
-        b: {x: 'x1', y: 'y1'}
+        a: { x: 'x1', y: 'y1' },
+        b: { x: 'x1', y: 'y1' }
       },
       array: ['item1'],
       withParent: function (value) {
@@ -69,14 +69,14 @@ describe('After loading a config', function () {
   })
   it('the object values should exist', function () {
     expect(testResult.test.objects).to.eql({
-      a: {x: 'x1', y: 'y1'},
-      b: {x: 'x1', y: 'y1'}
+      a: { x: 'x1', y: 'y1' },
+      b: { x: 'x1', y: 'y1' }
     })
   })
   it('the leaf values should exist', function () {
     expect(testResult.test.leafs).to.eql({
-      a: {x: 'x1', y: 'y1'},
-      b: {x: 'x1', y: 'y1'}
+      a: { x: 'x1', y: 'y1' },
+      b: { x: 'x1', y: 'y1' }
     })
   })
   it('the array values should exist', function () {
@@ -134,14 +134,14 @@ describe('After merging another config', function () {
   })
   it('object values should be deep merged', function () {
     expect(testResult.test.objects).to.eql({
-      a: {x: 'x1', y: 'y1'},
-      b: {x: 'x1', y: 'y2'}
+      a: { x: 'x1', y: 'y1' },
+      b: { x: 'x1', y: 'y2' }
     })
   })
   it('leaf values should be replaced', function () {
     expect(testResult.test.leafs).to.eql({
-      a: {x: 'x1', y: 'y1'},
-      b: {y: 'y2'}
+      a: { x: 'x1', y: 'y1' },
+      b: { y: 'y2' }
     })
   })
   it('array values should exist', function () {
@@ -178,14 +178,14 @@ describe('after loading a module', function () {
   })
   it('object values should be deep merged', function () {
     return expect(testResult.test.objects).to.eql({
-      a: {x: 'x1', y: 'y1'},
-      b: {x: 'x1', y: 'y2'}
+      a: { x: 'x1', y: 'y1' },
+      b: { x: 'x1', y: 'y2' }
     })
   })
   it('leaf values should be replaced', function () {
     return expect(testResult.test.leafs).to.eql({
-      a: {x: 'x1', y: 'y1'},
-      b: {y: 'y2'}
+      a: { x: 'x1', y: 'y1' },
+      b: { y: 'y2' }
     })
   })
   it('array values should exist', function () {
@@ -207,7 +207,7 @@ describe('the "merge"-method', function () {
 
   it('should throw an error if the config data for an engine that is not registered', function () {
     return expect(function () {
-      return testee.merge({test2: {}})
+      return testee.merge({ test2: {} })
     }).to.throw(Error)
   })
 
@@ -273,7 +273,7 @@ describe('The "registerEngine"-method', function () {
   })
 
   it('should use an empty default config if none is provided', function () {
-    return expect(customize().registerEngine('test', minimalEngine).run()).to.eventually.deep.equal({test: {}})
+    return expect(customize().registerEngine('test', minimalEngine).run()).to.eventually.deep.equal({ test: {} })
   })
 })
 
@@ -284,23 +284,23 @@ describe('The "configSchema"-method', function () {
       .registerEngine('test2', minimalEngine)
 
     return expect(co.configSchema()).to.deep.equal({
-      'id': 'http://json-schema.org/draft-04/schema#',
-      '$schema': 'http://json-schema.org/draft-04/schema#',
-      'type': 'object',
-      'properties': {
-        'test': {
+      id: 'http://json-schema.org/draft-04/schema#',
+      $schema: 'http://json-schema.org/draft-04/schema#',
+      type: 'object',
+      properties: {
+        test: {
           type: 'object',
           properties: {
-            'files': {
+            files: {
               type: 'string'
             },
-            'objects': {
+            objects: {
               type: 'object'
             },
-            'leafs': {
+            leafs: {
               type: 'object'
             },
-            'array': {
+            array: {
               type: 'array',
               items: {
                 type: 'string'
@@ -311,9 +311,9 @@ describe('The "configSchema"-method', function () {
             }
           }
         },
-        'test2': {
-          'description': 'No expicit schema has been provided for this engine',
-          'type': 'object'
+        test2: {
+          description: 'No expicit schema has been provided for this engine',
+          type: 'object'
         }
       }
     })
@@ -337,21 +337,21 @@ describe('the "run"-method', function () {
     .registerEngine('test1', minimalEngine)
     .registerEngine('test2', minimalEngine)
     .merge({
-      'test1': 'result1',
-      'test2': 'result2'
+      test1: 'result1',
+      test2: 'result2'
     })
 
   it('should only run a single engine, if the "onlyEngine"-option is set', function () {
-    return expect(twoEngines.run({onlyEngine: 'test1'})).to.eventually.deep.equal({
-      'test1': 'result1',
-      'test2': undefined
+    return expect(twoEngines.run({ onlyEngine: 'test1' })).to.eventually.deep.equal({
+      test1: 'result1',
+      test2: undefined
     })
   })
 
   it('should only run all engines, if the "onlyEngine"-option is not set', function () {
     return expect(twoEngines.run()).to.eventually.deep.equal({
-      'test1': 'result1',
-      'test2': 'result2'
+      test1: 'result1',
+      test2: 'result2'
     })
   })
 })
@@ -361,21 +361,21 @@ describe('the "watched"-method', function () {
     var watched = testee
       .registerEngine('test2', require('./testEngine'))
       .merge({
-        'test': {
+        test: {
           files: 'test/fixtures/testPartials2'
         },
-        'test2': {
+        test2: {
           files: 'test/fixtures/templates'
         }
       })
       .watched()
 
     return expect(watched).to.eventually.deep.equal({
-      'test': [
+      test: [
         'test/fixtures/testPartials1',
         'test/fixtures/testPartials2'
       ],
-      'test2': [
+      test2: [
         'test/fixtures/templates'
       ]
     })

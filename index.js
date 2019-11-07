@@ -86,9 +86,9 @@ function Customize (config, parentConfig, engines) {
     deep(_config).done(function (config) {
       debugState('New configuration', config)
     }, /* istanbul ignore next */
-      function (e) {
-        console.error('Error while debug-logging the built configuration ' + e.stack)
-      })
+    function (e) {
+      console.error('Error while debug-logging the built configuration ' + e.stack)
+    })
   }
 
   /**
@@ -113,7 +113,7 @@ function Customize (config, parentConfig, engines) {
     if (id.substr(0, 1) === '_') {
       throw new Error('Engine-id may not start with an underscore ("_"), but is ' + id)
     }
-    if (_.isUndefined(engine['run'])) {
+    if (_.isUndefined(engine.run)) {
       throw new Error('Engine ' + id + ' needs a run method')
     }
 
@@ -141,10 +141,10 @@ function Customize (config, parentConfig, engines) {
    */
   this.configSchema = function () {
     return {
-      'id': 'http://json-schema.org/draft-04/schema#',
-      '$schema': 'http://json-schema.org/draft-04/schema#',
-      'type': 'object',
-      'properties': _.mapValues(engines, function (engine) {
+      id: 'http://json-schema.org/draft-04/schema#',
+      $schema: 'http://json-schema.org/draft-04/schema#',
+      type: 'object',
+      properties: _.mapValues(engines, function (engine) {
         return engine.schema || {
           type: 'object',
           description: 'No expicit schema has been provided for this engine'
@@ -354,7 +354,7 @@ function customOverrider (a, b, propertyName) {
   if (Q.isPromiseAlike(a) || Q.isPromiseAlike(b)) {
     return Q.all([a, b]).spread(function (_a, _b) {
       // Merge the promise results
-      return _.merge({}, {x: _a}, {x: _b}, customOverrider).x
+      return _.merge({}, { x: _a }, { x: _b }, customOverrider).x
     })
   }
 

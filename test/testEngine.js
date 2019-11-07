@@ -32,16 +32,16 @@ module.exports = {
   schema: {
     type: 'object',
     properties: {
-      'files': {
+      files: {
         type: 'string'
       },
-      'objects': {
+      objects: {
         type: 'object'
       },
-      'leafs': {
+      leafs: {
         type: 'object'
       },
-      'array': {
+      array: {
         type: 'array',
         items: {
           type: 'string'

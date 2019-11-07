@@ -143,12 +143,12 @@ describe('the readFiles-function', function () {
       .then(function (result) {
         return expect(result).to.deep.equal({
           'eins.hbs': {
-            'contents': 'testPartials1/eins {{eins}}',
-            'path': 'test/fixtures/testPartials1/eins.hbs'
+            contents: 'testPartials1/eins {{eins}}',
+            path: 'test/fixtures/testPartials1/eins.hbs'
           },
           'zwei.hbs': {
-            'contents': 'testPartials1/zwei {{zwei}}',
-            'path': 'test/fixtures/testPartials1/zwei.hbs'
+            contents: 'testPartials1/zwei {{zwei}}',
+            path: 'test/fixtures/testPartials1/zwei.hbs'
           }
         })
       })
@@ -159,12 +159,12 @@ describe('the readFiles-function', function () {
       .then(function (result) {
         return expect(result).to.deep.equal({
           'eins.hbs': {
-            'contents': new Buffer('testPartials1/eins {{eins}}', 'utf-8'),
-            'path': 'test/fixtures/testPartials1/eins.hbs'
+            contents: Buffer.from('testPartials1/eins {{eins}}', 'utf-8'),
+            path: 'test/fixtures/testPartials1/eins.hbs'
           },
           'zwei.hbs': {
-            'contents': new Buffer('testPartials1/zwei {{zwei}}', 'utf-8'),
-            'path': 'test/fixtures/testPartials1/zwei.hbs'
+            contents: Buffer.from('testPartials1/zwei {{zwei}}', 'utf-8'),
+            path: 'test/fixtures/testPartials1/zwei.hbs'
           }
         })
       })
@@ -180,12 +180,12 @@ describe('the readFiles-function', function () {
       .then(function (result) {
         expect(result).to.deep.equal({
           'eins.hbs': {
-            'contents': 'testPartials1/eins {{eins}}',
-            'path': 'test/fixtures/testPartials1/eins.hbs'
+            contents: 'testPartials1/eins {{eins}}',
+            path: 'test/fixtures/testPartials1/eins.hbs'
           },
           'zwei.hbs': {
-            'contents': 'testPartials1/zwei {{zwei}}',
-            'path': 'test/fixtures/testPartials1/zwei.hbs'
+            contents: 'testPartials1/zwei {{zwei}}',
+            path: 'test/fixtures/testPartials1/zwei.hbs'
           }
         })
       })
@@ -201,12 +201,12 @@ describe('the readFiles-function', function () {
       .then(function (result) {
         expect(result).to.deep.equal({
           'eins.hbs': {
-            'contents': 'testPartials1/eins {{eins}}',
-            'path': 'test/fixtures/testPartials1/eins.hbs'
+            contents: 'testPartials1/eins {{eins}}',
+            path: 'test/fixtures/testPartials1/eins.hbs'
           },
           'zwei.hbs': {
-            'contents': 'testPartials1/zwei {{zwei}}',
-            'path': 'test/fixtures/testPartials1/zwei.hbs'
+            contents: 'testPartials1/zwei {{zwei}}',
+            path: 'test/fixtures/testPartials1/zwei.hbs'
           }
         })
       })
@@ -234,4 +234,3 @@ function changeContentsStreamToString (file, type) {
   })
   file.contents = toString(file.contents)
 }
-
