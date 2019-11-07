@@ -1,9 +1,8 @@
 # customize 
 
-[![NPM version](https://badge.fury.io/js/customize.svg)](http://badge.fury.io/js/customize)
+[![NPM version](https://img.shields.io/npm/v/customize.svg)](https://npmjs.com/package/customize)
 [![Travis Build Status](https://travis-ci.org/bootprint/customize.svg?branch=master)](https://travis-ci.org/bootprint/customize)
 [![Coverage Status](https://img.shields.io/coveralls/bootprint/customize.svg)](https://coveralls.io/r/bootprint/customize)
-
 
 > A simple framework to create customizable engines
 
@@ -39,11 +38,10 @@ The following example should demonstrate the usage of Customize and the `files`
 io-helper. Consider the following file tree
 
 <pre><code>
-
-├─┬ dir1
+├─┬ dir1/
 │ ├── a.md
 │ └── b.md
-├─┬ dir2
+├─┬ dir2/
 │ └── a.md
 ├── engine-concat-files.js
 ├── example-buildConfig.js
@@ -99,11 +97,9 @@ module.exports = {
   //
   run: function (config) {
     var result = ''
-    for (var filename in config) {
-      if (config.hasOwnProperty(filename)) {
-        result += config[filename].contents + '\n'
-      }
-    }
+    Object.keys(config).forEach(filename => {
+      result += config[filename].contents + '\n'
+    })
     return {
       // Return a file called "concat.txt"
       'concat.txt': result
@@ -154,9 +150,9 @@ The example creates a new Customize-instances, registers our engine under the na
 config. This example prints the following result.
 
 ```js
-{ files: 
-   { 'b.md': { path: 'dir1/b.md', contents: 'Second file (from dir1)' },
-     'a.md': { path: 'dir1/a.md', contents: 'First file (from dir1)' } } }
+{ files:
+   { 'a.md': { path: 'dir1/a.md', contents: 'First file (from dir1)' },
+     'b.md': { path: 'dir1/b.md', contents: 'Second file (from dir1)' } } }
 ```
 
 We can see that the `files`-call of the preprocessor converted the directory path into 
@@ -185,7 +181,7 @@ The engines `run()`-method will now be executed with the resolved configuration,
 which yields the following output:
 
 ```
-{ 'concat.txt': 'First file (from dir1)\nSecond file (from dir1)\n' }
+{ 'concat.txt': 'Second file (from dir1)\nFirst file (from dir1)\n' }
 ```
 
 ### Merging another configuration
@@ -202,11 +198,10 @@ We can do this, by merging another configuration, but let's have a look at the d
 tree before doing this:
 
 <pre><code>
-
-├─┬ dir1
+├─┬ dir1/
 │ ├── a.md
 │ └── b.md
-├─┬ dir2
+├─┬ dir2/
 │ └── a.md
 ├── engine-concat-files.js
 ├── example-buildConfig.js
@@ -331,32 +326,32 @@ Create a new Customize object with an empty configuration
 ### customize.debugState
 For coverage testing: Expose the debugState object so it can be enabled an disabled in testcases
 
-**Kind**: static property of <code>[customize](#module_customize)</code>  
+**Kind**: static property of [<code>customize</code>](#module_customize)  
 <a name="module_customize.debug"></a>
 
 ### customize.debug
 For coverage testing: Expose the debug object so it can be enabled an disabled in testcases
 
-**Kind**: static property of <code>[customize](#module_customize)</code>  
+**Kind**: static property of [<code>customize</code>](#module_customize)  
 <a name="module_customize.Customize"></a>
 
 ### customize.Customize : <code>customize</code>
 Exposes the constructor of the `customize` object
 
-**Kind**: static property of <code>[customize](#module_customize)</code>  
+**Kind**: static property of [<code>customize</code>](#module_customize)  
 <a name="module_customize.overrider"></a>
 
 ### customize.overrider : <code>customOverrider</code>
 Custom overrider-function (that is used as `customizer` in (lodash#merge)[https://lodash.com/docs#merge]
 
-**Kind**: static property of <code>[customize](#module_customize)</code>  
+**Kind**: static property of [<code>customize</code>](#module_customize)  
 <a name="module_customize.withParent"></a>
 
 ### customize.withParent
 Wrap a function so that if it overrides another function, that function will
 be available as `this.parent`
 
-**Kind**: static property of <code>[customize](#module_customize)</code>  
+**Kind**: static property of [<code>customize</code>](#module_customize)  
 **Read only**: true  
 **Api**: public  
 
@@ -371,8 +366,8 @@ Create a promise that is regarded as leaf in the configuration tree.
 That means, that the overrider is not resolving this promise when overriding values.
 Promised object values will not be merged but replaced.
 
-**Kind**: static property of <code>[customize](#module_customize)</code>  
-**Access:** public  
+**Kind**: static property of [<code>customize</code>](#module_customize)  
+**Access**: public  
 **Read only**: true  
 
 | Param | Type | Description |
@@ -382,7 +377,7 @@ Promised object values will not be merged but replaced.
 <a name="module_customize..Customize"></a>
 
 ### customize~Customize
-**Kind**: inner class of <code>[customize](#module_customize)</code>  
+**Kind**: inner class of [<code>customize</code>](#module_customize)  
 
 * [~Customize](#module_customize..Customize)
     * [new Customize()](#new_module_customize..Customize_new)
@@ -413,8 +408,8 @@ this module
 #### customize.registerEngine(id, engine)
 Register an engine
 
-**Kind**: instance method of <code>[Customize](#module_customize..Customize)</code>  
-**Access:** public  
+**Kind**: instance method of [<code>Customize</code>](#module_customize..Customize)  
+**Access**: public  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -432,14 +427,14 @@ Register an engine
 Returns the JSON-schema that configuration objects must match for this
 configuration. The schema does not contain main description property
 
-**Kind**: instance method of <code>[Customize](#module_customize..Customize)</code>  
+**Kind**: instance method of [<code>Customize</code>](#module_customize..Customize)  
 <a name="module_customize..Customize+merge"></a>
 
 #### customize.merge(config) ⇒ <code>Customize</code>
 Creates a new instance of Customize. The configuration values of the current Customize
 are used as default values and are overridden by the configuration provided as parameter.
 
-**Kind**: instance method of <code>[Customize](#module_customize..Customize)</code>  
+**Kind**: instance method of [<code>Customize</code>](#module_customize..Customize)  
 **Returns**: <code>Customize</code> - the new Customize instance  
 **Api**: public  
 
@@ -458,9 +453,9 @@ This function needs to be passed in here.
 A new Customize will be returned that overrides the current configuration
 with the configuration of the module.
 
-**Kind**: instance method of <code>[Customize](#module_customize..Customize)</code>  
+**Kind**: instance method of [<code>Customize</code>](#module_customize..Customize)  
 **Returns**: <code>Customize</code> - the Customize instance returned by the module  
-**Access:** public  
+**Access**: public  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -473,27 +468,27 @@ Return a promise for the merged configuration.
 This functions is only needed to inspect intermediate configuration results
 (i.e. for testing and documentation purposes)
 
-**Kind**: instance method of <code>[Customize](#module_customize..Customize)</code>  
+**Kind**: instance method of [<code>Customize</code>](#module_customize..Customize)  
 **Returns**: <code>Promise.&lt;object&gt;</code> - a promise for the whole configuration  
-**Access:** public  
+**Access**: public  
 <a name="module_customize..Customize+watched"></a>
 
 #### customize.watched() ⇒ <code>Promise.&lt;object.&lt;Array.&lt;string&gt;&gt;&gt;</code>
 Return a promise for the files needing to be watched in watch-mode,
 indexed by engine.
 
-**Kind**: instance method of <code>[Customize](#module_customize..Customize)</code>  
+**Kind**: instance method of [<code>Customize</code>](#module_customize..Customize)  
 **Returns**: <code>Promise.&lt;object.&lt;Array.&lt;string&gt;&gt;&gt;</code> - a promise for the files to be watched.  
-**Access:** public  
+**Access**: public  
 <a name="module_customize..Customize+run"></a>
 
 #### customize.run([options]) ⇒ <code>Promise.&lt;object&gt;</code>
 Run each engine with its part of the config.
 
-**Kind**: instance method of <code>[Customize](#module_customize..Customize)</code>  
+**Kind**: instance method of [<code>Customize</code>](#module_customize..Customize)  
 **Returns**: <code>Promise.&lt;object&gt;</code> - an object containing on property per registered engine
  (the key is the engine-id) containing the result of each engine  
-**Access:** public  
+**Access**: public  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -503,7 +498,7 @@ Run each engine with its part of the config.
 <a name="module_customize..customize"></a>
 
 ### customize~customize() ⇒ <code>Customize</code>
-**Kind**: inner method of <code>[customize](#module_customize)</code>  
+**Kind**: inner method of [<code>customize</code>](#module_customize)  
 **Api**: public  
 <a name="jsonschema"></a>
 
@@ -545,7 +540,7 @@ Returns an undefined value if the directory path is undefined.
 
 | Param | Type | Description |
 | --- | --- | --- |
-| directoryPath | <code>string</code> &#124; <code>null</code> &#124; <code>undefined</code> | the path to the directory |
+| directoryPath | <code>string</code> \| <code>null</code> \| <code>undefined</code> | the path to the directory |
 | [options] | <code>object</code> |  |
 | [options.glob] | <code>string</code> | an optional glob pattern for filtering files |
 | [options.stream] | <code>boolean</code> | if set to true, the contents of a file will be a readable stream   instead of the actual data. |
@@ -566,7 +561,7 @@ The contents of each file is a UTF-8 encoded string.
 
 | Param | Type | Description |
 | --- | --- | --- |
-| directoryPath | <code>string</code> &#124; <code>null</code> &#124; <code>undefined</code> | the path to the directory |
+| directoryPath | <code>string</code> \| <code>null</code> \| <code>undefined</code> | the path to the directory |
 | [options] | <code>object</code> |  |
 | [options.glob] | <code>string</code> | an optional glob pattern for filtering files |
 
@@ -574,15 +569,17 @@ The contents of each file is a UTF-8 encoded string.
 
 
 
-## License
+# License
 
-`customize` is published under the MIT-license. 
+`customize` is published under the MIT-license.
+
 See [LICENSE.md](LICENSE.md) for details.
 
-## Release-Notes
+
+# Release-Notes
  
 For release notes, see [CHANGELOG.md](CHANGELOG.md)
  
-## Contributing guidelines
+# Contributing guidelines
 
 See [CONTRIBUTING.md](CONTRIBUTING.md).

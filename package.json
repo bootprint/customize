@@ -20,7 +20,6 @@
     "test": "mocha && standard",
     "format": "standard --fix",
     "thought": "thought run -a",
-    "prethoughtcheck": "thought --version || npm -g install thought",
     "thoughtcheck": "thought check-engines",
     "version": "thoughtful changelog -o -a && npm run thought",
     "preversion": "npm run thoughtcheck"
@@ -59,6 +58,8 @@
     "mocha": "^2.3.3",
     "standard": "^14.3.1",
     "stream-to-string": "^1.1.0",
+    "thought": "^2.0.0",
+    "thought-plugin-jsdoc": "^1.1.0",
     "thoughtful-release": "^0.3.0",
     "trace": "^2.3.0",
     "trace-and-clarify-if-possible": "^1.0.0"
