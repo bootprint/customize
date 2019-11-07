@@ -181,7 +181,7 @@ The engines `run()`-method will now be executed with the resolved configuration,
 which yields the following output:
 
 ```
-{ 'concat.txt': 'Second file (from dir1)\nFirst file (from dir1)\n' }
+{ 'concat.txt': 'First file (from dir1)\nSecond file (from dir1)\n' }
 ```
 
 ### Merging another configuration

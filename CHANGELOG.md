@@ -3,6 +3,13 @@
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 <a name="current-release"></a>
+# Version 1.1.1 (Thu, 07 Nov 2019 21:07:36 GMT)
+
+* [5fbb8c6](https://github.com/bootprint/customize/commit/5fbb8c6) update docs, add thought and thought-plugin-jsdoc to dev-dependencies - Nils Knappmeier
+* [2870cdd](https://github.com/bootprint/customize/commit/2870cdd) fix: update m-io dependency - Nils Knappmeier
+
+
+
 # Version 1.1.0 (Thu, 22 Dec 2016 21:43:36 GMT)
 
 * [6761bff](https://github.com/bootprint/customize/commit/6761bff) IO-Helper "readFiles" for returning the contents of files as stream or Buffer (#1) - Nils Knappmeier
